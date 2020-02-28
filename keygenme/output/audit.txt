@@ -1,0 +1,25 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Fri Feb  7 09:53:32 2020
+Invocation: foremost keygenME.exe 
+Output directory: /root/Downloads/wgmy/keygenme/output
+Configuration file: /etc/foremost.conf
+------------------------------------------------------------------
+File: keygenME.exe
+Start: Fri Feb  7 09:53:32 2020
+Length: 118 KB (121344 bytes)
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+0:	00000000.exe 	     118 KB 	          0 	 02/03/2020 12:03:08
+1:	00000018.png 	      10 KB 	       9696 	  (256 x 256)
+Finish: Fri Feb  7 09:53:32 2020
+
+2 FILES EXTRACTED
+	
+exe:= 1
+png:= 1
+------------------------------------------------------------------
+
+Foremost finished at Fri Feb  7 09:53:32 2020
