@@ -153,3 +153,6 @@ Saw a few nonsense image, only one is the flag image:
 Go to http://fortnight1802.wargames.my:8001/secret_9hStNLrSEtnBGwk0ZYTeVb8j7YMv58/flag.png and there's a flag!
 
 ![flag](flag.png)
+
+# Flag
+> wgmy{7959a60d89e1d4fba8caa69f5214525e}
