@@ -172,7 +172,10 @@ Notice we enter 20 bytes but the stack there is only 19 `a` and a NULL byte
 
 According to the man page of `fgets`:
 ```
-fgets() reads in at most one less than size characters from stream and stores them into the buffer pointed to by s. Reading stops after an EOF or a newline. If a newline is read, it is stored into the buffer. **A terminating null byte '\0' is stored after the last character in the buffer.**
+fgets() reads in at most one less than size characters from stream and stores them into the buffer pointed to by s.
+Reading stops after an EOF or a newline. 
+If a newline is read, it is stored into the buffer. 
+A terminating null byte '\0' is stored after the last character in the buffer.
 ``` 
 Meaning the `fgets` function may delete a character and add a NULL byte at the end
 
