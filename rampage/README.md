@@ -35,7 +35,7 @@ Error opening file `buf`
 ```
 Looks like it require a `buf` file, try create it:
 ```bash
-echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" > buf
+echo aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa > buf
 ```
 Run it again:
 ```
