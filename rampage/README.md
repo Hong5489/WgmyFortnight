@@ -66,7 +66,7 @@ Error opening file `buf`
 </assembly>
 ```
 # Reverse Engineering
-Lets try to decompile it with Ghidra!
+Lets try to decompile it with **Ghidra**!
 
 In the `entry` function can find the `main` function:
 ```c
@@ -165,14 +165,18 @@ The stack in the program:
 0019FF20   ADADADAD  ­­­­
 0019FF24   ADADADAD  ­­­­
 0019FF28   ADADADAD  ­­­­
-0019FF2C   CCADADAD  ­­­Ì				<- EIP
+0019FF2C   CCADADAD  ­­­Ì			<- EIP
 0019FF30   00000001  ...
 ```
 Notice we enter 20 bytes but the stack there is only 19 `a` and a NULL byte
 
+According to the man page of `fgets`:
+```
+fgets() reads in at most one less than size characters from stream and stores them into the buffer pointed to by s. Reading stops after an EOF or a newline. If a newline is read, it is stored into the buffer. **A terminating null byte '\0' is stored after the last character in the buffer.**
+``` 
 Meaning the `fgets` function may delete a character and add a NULL byte at the end
 
-Next try with 16 `a`, 4 `b` and a `c`. If not mistaken the EIP should be `AEAEAEAE` (0xCC ^ 0x62 `b` = 0xAE)
+Next try with `16*a`, `4*b` and `c`. If not mistaken the EIP should be `AEAEAEAE` (0xCC ^ 0x62 (b in ASCII) = 0xAE)
 
 ![image5](image5.png)
 
