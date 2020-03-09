@@ -287,7 +287,7 @@ And notice the shellcode is overwritting the stack boundary:
 0019FFF8   632982BC  ¼‚)c
 0019FFFC   83DF9BCC  Ì›ßƒ <- End of Stack
 ```
-So I need to reduce the shellcode size to less than 208 bytes (0x1A0000 - 0x19FF30)
+So I need to reduce the shellcode size to less than 208 bytes (0x1A0000 - 0x19FF30 = 208)
 
 I can add `--smallest` parameter to the command to get the smallest shellcode:
 ```bash
