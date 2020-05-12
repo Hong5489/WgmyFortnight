@@ -32,11 +32,11 @@ Running `checksec` to see the which protection is enabled
 Notice all protection is disabled except NX (Means we cannot execute shellcode on stack)
 
 Based on the result:
-- We able to Overwrite GOT entry (Global Offset Table)
-- Overwrite return address easily
-- Function address in file is mapped same as memory, because No PIE (Position Independent Executables)
+- **We able to Overwrite GOT entry (Global Offset Table)**
+- **Overwrite return address easily**
+- **Function address in file is mapped same as memory, because No PIE (Position Independent Executables)**
 
-Notice there is no GOT entry is the executable:
+Notice there is no GOT entry in the executable:
 ```
 [!] Did not find any GOT entries
 ```
@@ -105,7 +105,7 @@ Ex: Buf got 1028 bytes
 It will give error message like SIGFAULT because EIP (return address) is overwritten
 ```
 
-In FUN_08048526:  
+**In FUN_08048526:**
 ```c
 void FUN_08048526(void)
 
@@ -163,15 +163,17 @@ But each function address offset/distance is always the same!
 
 For example:
 ``` 
-First execute
+If printf and system offset is 50:
+
+1st execute
 printf GOT: 100
 system GOT:  50
 
-Second execute
+2nd execute
 printf GOT: 600
 system GOT: 550
 
-Third execute
+3rd execute
 printf GOT: 300
 system GOT: 250
 ```
@@ -180,11 +182,11 @@ We have `system` address but we still need a `/bin/sh` string to execute shell
 Luckily inside libc got this string so if we leak function address then can calculate its offset to the string address
 
 To expliot this, our plan is:
-1. Use `puts` function to leak address from GOT table
-2. Run `vuln` function again so can exploit again
-3. Calculate its offset between "/bin/sh" string in library
-4. Run `system(binsh address)`
-5. Cat the damn flag!
+1. **Use `puts` function to leak address from GOT table**
+2. **Run `vuln` function again so can exploit again**
+3. **Calculate its offset between "/bin/sh" string in library**
+4. **Run `system(binsh address)`**
+5. **Cat the damn flag!**
 
 ## Testing
 Before we exploit the actual machine, lets test with our local machine first
@@ -231,6 +233,7 @@ Now lets try to use `puts` function to print something and return to `vuln` agai
 
 The payload should be `puts` + `vuln` + `string` based on the stack layout when calling function:
 ![image](stack-convention.png)
+
 *EBP is puts, return address is vuln and string is 1st parameter*
 ```py
 from pwn import *
