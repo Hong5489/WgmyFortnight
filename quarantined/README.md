@@ -117,7 +117,7 @@ void FUN_08048526(void)
 ```
 This function just print and echo, so we will ignore this function
 
-Although no GOT entry, we found something like PLT(Procedure Linkage Table) and GOT entry of some function at following address:
+Although no GOT entry, we found something like PLT(Procedure Linkage Table) and GOT entry of some function
 
 PLT is first executed when the function is called, it **jump to address in GOT entry:**
 ```
