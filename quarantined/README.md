@@ -14,6 +14,7 @@ Inside the 7z got 2 files:
 - [quarantined](quarantined)
 
 `libc.so.6` is the C library (libc) used by the challenge machine
+
 `quarantined` is a ELF 32bit executable file
 
 Lets do some basic enumeration first:
