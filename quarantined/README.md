@@ -32,7 +32,7 @@ Running `checksec` to see the which protection is enabled
 
 Notice all protection is disabled except NX (Means we cannot execute shellcode on stack)
 
-Based on the result:
+**Based on the result:**
 - **We able to Overwrite GOT entry (Global Offset Table)**
 - **Overwrite return address easily**
 - **Function address in file is mapped same as memory, because No PIE (Position Independent Executables)**
@@ -125,9 +125,9 @@ PLT is first executed when the function is called, it **jump to address in GOT e
 thunk int printf(char * __format, ...)
             
 080483a0 ff 25 0c        JMP        dword ptr [DAT_0804a00c] -> printf
-         a0 04 08                                                             
+         a0 04 08
 
-                           
+
 thunk char * gets(char * __s)
           
 080483b0 ff 25 10        JMP        dword ptr [DAT_0804a010] -> gets  
@@ -144,6 +144,15 @@ thunk int system(char * __command)
          a0 04 08                                                             
 
 ```
+PLT:
+|Function|Location|
+|---|---|
+|`printf`|0x80483a0|
+|`gets`|0x80483b0|
+|`puts`|0x80483c0|
+|`system`|0x80483d0|
+
+
 GOT entry:
 
 |Function|Location|
@@ -158,7 +167,7 @@ GOT entry:
 
 **GOT (Global Offset Table)** contains library function address like printf, system etc.
 
-But the those address is only loaded when the function is been called, and the address is randomly choosen (ASLR)
+But those address are **only loaded when the function is been called**, and the address is randomly choosen (ASLR)
 
 But each function address offset/distance is always the same!
 
