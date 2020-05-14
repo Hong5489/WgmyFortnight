@@ -157,7 +157,6 @@ GOT entry:
 
 |Function|Location|
 |---|---|
-|`__DT_PLTGOT`|0x804a000|
 |`gets`|0x804a010|
 |`printf`|0x804a00c|
 |`puts`|0x804a014|
